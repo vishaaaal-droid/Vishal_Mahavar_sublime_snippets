@@ -1,0 +1,14 @@
+<snippet>
+	<content><![CDATA[
+ll random(const ll X,ll itr,ll zero=0){
+    if(itr == 0) {
+        return 1LL;
+    }
+    ll ans = rand()%X+zero;
+    return (ans * random(X,itr-1,zero)) % X+1;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>random_generator</tabTrigger>	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,67 @@
+<snippet>
+	<content><![CDATA[
+class seg_tree{
+private:
+    vll st; vll lazy; ll n; bool lazyProp;
+    ll val; pll range; bool oneIndx; ll resetValue;
+    void createTree(ll,ll,ll,const vll &); void push(ll);
+    void update_(ll,ll,ll); ll query_(ll,ll,ll); inline ll Updateoperation(ll,ll); inline ll Queryoperation(ll,ll);
+public:
+    seg_tree(ll siz,ll reset=0,bool indx=0,bool isLazy=0) :n(siz),lazyProp(isLazy),oneIndx(indx),resetValue(reset) {
+        st.resize(siz*4+1,resetValue); if(lazyProp) lazy.resize(siz*4+1,resetValue);
+    }
+    seg_tree(ll siz,const vll &a,ll reset=0,bool indx=0,bool isLazy=0) :n(siz),lazyProp(isLazy),oneIndx(indx),resetValue(reset) {
+        st.resize(siz*4+1,resetValue); if(lazyProp) lazy.resize(siz*4+1,resetValue);
+        createTree(oneIndx,siz-1+oneIndx,0,a);
+    }
+    void update(ll,ll,ll); ll query(ll,ll);
+};
+inline ll seg_tree::Updateoperation(ll a,ll b){
+    return ${0:a + b};
+}
+inline ll seg_tree::Queryoperation(ll a,ll b){
+    return ${0:a + b};
+}
+void seg_tree::createTree(ll low,ll high,ll i,const vll &a){
+    if(low == high){
+        st[i] = a[low];
+        return;
+    }
+    ll mid = low + (high-low)/2;
+    createTree(low,mid,i*2+1,a); createTree(mid+1,high,i*2+2,a);
+    st[i] = Queryoperation(st[i*2+1],st[i*2+2]);
+}
+void seg_tree::push(ll node){
+    if(!lazyProp) return; st[node*2+1] = Updateoperation(st[node*2+1],lazy[node]); 
+    st[node*2+2] = Updateoperation(st[node*2+2],lazy[node]); lazy[node*2+1] = Updateoperation(lazy[node*2+1],lazy[node]); 
+    lazy[node*2+2] = Updateoperation(lazy[node*2+2],lazy[node]); lazy[node] = resetValue;
+}
+void seg_tree::update_(ll low,ll high,ll i){
+    if(range.first>high||range.second<low) return;
+    if(range.first<=low && range.second >= high){
+        st[i] = Updateoperation(st[i],val); if(lazyProp) lazy[i] = Updateoperation(lazy[i],val);
+        return;
+    }
+    ll mid = (high-low)/2+low;
+    push(i);
+    update_(low,mid,i*2+1); update_(mid+1,high,i*2+2);
+    st[i] = Queryoperation(st[i*2+1],st[i*2+2]);
+}
+void seg_tree::update(ll l,ll r,ll value){
+    range = {l,r}; val = value; update_(oneIndx,n-1+oneIndx,0);
+}
+ll seg_tree::query_(ll low,ll high,ll i){
+    if(range.second<low||range.first>high) return resetValue;
+    else if(range.second>=high&&range.first<=low) return st[i];
+    ll mid = (high-low)/2 + low;
+    push(i);
+    return Queryoperation(query_(low,mid,i*2+1),query_(mid+1,high,i*2+2));
+}
+ll seg_tree::query(ll l,ll r){
+    range = {l,r}; return query_(oneIndx,n-1+oneIndx,0);
+}]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>segment tree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

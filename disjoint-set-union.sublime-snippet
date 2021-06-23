@@ -1,0 +1,26 @@
+<snippet>
+	<content><![CDATA[
+vll parent; vll depth;
+ll findParent(ll node){
+    if(parent[node]==node) return node;
+    parent[node] = findParent(parent[node]);
+    return parent[node];
+}
+void merge(ll x,ll y){
+    x = findParent(x); y = findParent(y);
+    if(x==y) return;
+    if(depth[x]<depth[y]){
+        parent[x] = y;
+    }
+    else{
+        parent[y] = x; 
+        depth[x] += (depth[x]==depth[y]);
+    }
+}  
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dsu</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

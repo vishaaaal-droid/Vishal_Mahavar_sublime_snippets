@@ -1,0 +1,80 @@
+<snippet>
+	<content><![CDATA[
+class centroid{
+private:
+    ll n; vll siz;vector<bool> vis;
+    vll par;  vvll adj;
+public:
+    centroid(ll size){
+        n = size; adj.clear(); siz.clear(); par.clear(); vis.clear();
+        adj.resize(n+1); siz.resize(n+1); par.resize(n+1,0); vis.resize(n+1,0);
+    }
+    centroid(const vvll &mat){
+        n = mat.size(); par.resize(n); vis.resize(n); siz.resize(n); adj.resize(n);
+        n--;
+        adj = mat;
+    }
+    void addEdge(ll,ll);
+    void precompute(ll,ll);
+    ll findCentroid(ll,ll,ll);
+    ll decompose(ll,ll);
+    void adjust(void);
+    void adjust(vvll &);
+    ll findHeight(ll,ll);
+};
+void centroid::addEdge(ll a,ll b){
+    adj[a].pb(b); adj[b].pb(a);
+}
+void centroid::precompute(ll node,ll par){
+    siz[node] = 1;
+    for(ll x:adj[node]){
+        if(x == par) continue;
+        if(vis[x]) continue;
+        precompute(x,node);
+        siz[node] += siz[x];
+    }
+}
+ll centroid::findCentroid(ll node,ll par,ll size){
+    for(ll x:adj[node]){
+        if(x == par) continue;
+        if(vis[x]) continue;
+        if(siz[x]>size/2) return findCentroid(x,node,size);
+    }
+    return node;
+}
+ll centroid::decompose(ll node=1,ll p=0){
+    precompute(node,p);
+    ll c = findCentroid(node,p,siz[node]);
+    vis[c]=1; par[c] = p;
+    for(ll x:adj[c]){
+        if(x == p) continue;
+        if(vis[x]) continue;
+       ll temp = decompose(x,c);
+    }
+    return c;
+}
+void centroid::adjust(void){
+    adj.clear(); adj.resize(n+1);
+    for(ll i=1;i<=n;i++){
+        if(par[i] == 0) continue;
+        adj[i].pb(par[i]); adj[par[i]].pb(i);
+    }
+}
+ll centroid::findHeight(ll root,ll par){
+    ll h=0;
+    for(ll x:adj[root]){
+        if(x == par) continue;
+        h = max(h,findHeight(x,root));
+    }
+    return ++h;
+}
+void centroid::adjust(vvll &mat){
+    adjust();
+    mat = adj;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>centroid</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

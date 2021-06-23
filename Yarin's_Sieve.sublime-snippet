@@ -1,0 +1,23 @@
+<snippet>
+	<content><![CDATA[
+#define MAXS 10000000 // upto which, primes are needed
+#define MAXSH (MAXS/2)
+#define MAXSQ 5000 // sqrt(MAXSIEVE)/2 
+#define isprime(n) ((SIEVE_ARR[n >> 4] & (1<<(((n)>>1)&7)))>0) //works when n is odd
+char SIEVE_ARR[MAXS/16+2];
+
+void sieve()
+{
+    int i,j;
+    memset(SIEVE_ARR,255,sizeof(SIEVE_ARR));   
+    SIEVE_ARR[0]=0xFE;
+    for(i=1;i<MAXSQ;i++)
+        if (SIEVE_ARR[i>>3]&(1<<(i&7)))
+            for(j=2*i*i+2*i;j<MAXSH;j+=i+i+1)
+                SIEVE_ARR[j>>3]&=~(1<<(j&7));
+}]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	 <tabTrigger>yarins sieve</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

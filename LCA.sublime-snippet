@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+vvll adj,up; vll level,in,out; ll timer;
+void dfsTimer(ll node,ll par,ll lev){
+    in[node] = ++timer; up[node][0] = par; level[node] = lev;
+    for(ll i=1;i<up[0].size();i++){
+        up[node][i] = up[up[node][i-1]][i-1];
+    }
+    for(ll x:adj[node]){ if(x == par) continue; dfsTimer(x,node,lev+1); }
+    out[node] = ++timer;
+}
+
+inline bool isParent(ll u,ll v){
+    if(in[u]<=in[v] && out[u]>=out[v]) return true;
+    return false;
+}
+
+ll LCA(ll u,ll v){
+    if(isParent(u,v)) return u; if(isParent(v,u)) return v;
+    ll L = up[0].size();
+    for(ll i = L-1; i>=0; i--){ if(!isParent(up[u][i],v)) u = up[u][i]; }
+    return up[u][0];
+}
+
+ll dist(ll u,ll v){
+    ll L = LCA(u,v); return level[u]+level[v]-2*level[L];
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	 <tabTrigger>binary_lifting</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

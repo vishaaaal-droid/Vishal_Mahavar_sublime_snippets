@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+class fenwick_tree{
+private:
+    vll BIT;
+public:
+    fenwick_tree(int n){
+        BIT.resize(n+1,0);
+    }
+    ll query(ll i){
+        ll res=0;
+        while(i>=0){
+            res+=BIT[i];
+            i = (i&(i+1))-1;
+        }
+        return res;
+    }
+    void update(ll i,ll val){
+        while(i<BIT.size()){
+            BIT[i]+=val;
+            i = (i|(i+1));
+        }
+    }
+};]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>fenwick tree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

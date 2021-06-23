@@ -1,0 +1,24 @@
+<snippet>
+	<content><![CDATA[
+vll Z_function(const string &s){
+    ll n = s.length();
+    pll p={0,0};
+    vll z(n);
+    for(int i=1;i<n;i++){
+        if(p.second >= i){
+            z[i] = min(p.second-i+1,z[i-p.first]);
+        }
+        while(i + z[i] < n && s[i+z[i]] == s[z[i]]){
+            ++z[i];
+        }
+        if(i+z[i]-1 > p.second){
+            p = {i,i+z[i]-1};
+        }
+    }
+    return z;
+}]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>z function</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

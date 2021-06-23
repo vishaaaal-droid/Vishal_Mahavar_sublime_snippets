@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[vector<ll> nextGreaterFill(ll arr[],ll n){
+    stack<ll> s; vector<ll> nextGreater(n);
+    for(ll i=n-1;i>=0;i--){
+        while(!s.empty()&&arr[s.top()]<=arr[i]) s.pop();
+        if(s.empty()) nextGreater[i]=-1;
+        else nextGreater[i]=s.top();
+        s.push(i);
+    }
+    return nextGreater;
+}]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>next_greater</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

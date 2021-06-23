@@ -1,0 +1,26 @@
+<snippet>
+	<content><![CDATA[
+inline ll get(ll n,ll l,ll r){
+    return (r/n - ((l+n-1)/n-1));
+}
+long long countIt(ll n,ll l,ll r){
+    vll v;
+    while(n>1){
+        ll p = spf[n]; while(p == spf[n]) n /= p;
+        v.pb(p);
+    }
+    long long ans = 0; int m = v.size();
+    for(int mask = 1; mask < (1<<m); mask++){
+        int b = __builtin_popcount(mask);
+        int val=1; for(int i=0;i<m;i++){
+            if(mask&(1<<i)) val *= v[i];
+        }
+        ans += (1-2*(b%2==0))*get(val,l,r);
+    }
+    return ans;
+}]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	 <tabTrigger>nc_counter</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

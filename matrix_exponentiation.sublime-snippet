@@ -1,0 +1,63 @@
+<snippet>
+	<content><![CDATA[class matrix{
+public:
+	vector<vll> m;
+	ll size;
+	matrix(ll n){
+		m.resize(n,vll(n,0));
+		size=n;
+	}
+	ll at(ll x,ll y){
+		return m[x][y];
+	}
+	void put(ll x,ll y,ll val){
+		m[x][y]=val;
+	}
+	void prod(matrix &m2){
+		vector<vll> newMatrix(size,vll(size));
+		for(ll i=0;i<size;i++){
+			for(ll j=0;j<size;j++){
+				ll val=0;
+				for(ll l=0;l<size;l++){
+					val=(val+(m[i][l]*m2.at(l,j))%p)%p;
+				}
+				newMatrix[i][j]=val;
+			}
+		}
+		for(ll i=0;i<size;i++){
+			for(ll j=0;j<size;j++){
+				m[i][j]=newMatrix[i][j];
+			}
+		}
+	}
+};
+matrix identity(ll n){
+	matrix id(n);
+	for(ll i=0;i<n;i++){
+		id.put(i,i,1);
+	}
+	return id;
+}
+matrix matrixExpo(matrix m,ll x){
+	matrix res=identity(m.size);
+	if(x<0){
+    for(ll i=0;i<m.size;i++){
+      res.put(i,i,0);
+    }
+    return res;
+  }
+	while(x){
+		if(x&1) {
+			res.prod(m);
+			x--;
+		}
+		if(x==0) break;
+		x>>=1; m.prod(m);
+	}
+	return res;
+}]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	 <tabTrigger>matrix_exponentiation</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

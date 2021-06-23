@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+class EulerTour {
+	private:
+		vector<vector<ll>> g;
+		vector<ll> ei;
+		bool d;
+ 
+		void recTour(ll i, vector<ll>& que) {
+			while(ei[i] < g[i].size()) {
+				ll t = g[i][ei[i]];
+				++ei[i];
+				if ((!d) && (ei[t] >= g[t].size() || g[t][ei[t]] > i)) continue;
+				recTour(t, que);
+			}
+			que.push_back(i);
+		}
+	public:
+		EulerTour(const vector<vector<ll>>& conns, bool dir = false) : g(conns), ei(conns.size(), 0), d(dir) {
+			for (int i = 0; i < g.size(); ++i) sort(g[i].begin(), g[i].end());
+		}
+ 
+		vector<ll> getTour(int i = 0) {
+			vector<ll> res;
+			recTour(i, res);
+			return res;
+		}
+};]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>euler_tour</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
