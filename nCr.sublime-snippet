@@ -15,13 +15,13 @@ vll fact,invFact;
 void prepare(ll size){
     if(size <= 0) return;
     fact.resize(size+1); invFact.resize(size+1); fact[0]=invFact[0]=1;
-    for(int i=1;i!=size;i++){
+    for(int i=1;i<=size;i++){
         fact[i] = fact[i-1]*i%MOD; invFact[i]=invFact[i-1]*power(i,MOD-2)%MOD;
     }
 }
 ll nCr(ll n,ll r){
     if(r < 0 || r > n) return 0;
-    ll ans = fact[n] ;ans = ans * invFact[r]; ans = ans * invFact[n-r]%MOD; return ans;
+    ll ans = fact[n] ;ans = ans * invFact[r]%MOD; ans = ans * invFact[n-r]%MOD; return ans;
 }]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>nCr</tabTrigger> 

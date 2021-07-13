@@ -1,6 +1,10 @@
 <snippet>
 	<content><![CDATA[
 vvll adj,up; vll level,in,out; ll timer;
+void binary_lifitng_prepare(int n,int m=20){
+    adj.clear(); adj.resize(n+1); up.assign(n+1,vll(m,0)); in.resize(n+1); out.resize(n+1);
+    level.resize(n+1); timer=0;
+}
 void dfsTimer(ll node,ll par,ll lev){
     in[node] = ++timer; up[node][0] = par; level[node] = lev;
     for(ll i=1;i<up[0].size();i++){

@@ -1,5 +1,6 @@
 {
-"cmd": ["g++.exe","-g", "-Wall", "-Wshadow", "-fmax-errors=2", "-static", "-DLOCAL", "-DDEBUG", "-D_GLIBCXX_DEBUG", "-D_GLIBCXX_DEBUG_PEDANTIC", "-Wl,--stack=268435456", "-O2", "-std=c++17", "${file}", "-o", "${file_base_name}.exe", "&&" , "${file_base_name}.exe<input.txt>output.txt"],
+"cmd": ["g++.exe","-g", "-Wall","-Wextra", "-Wshadow","-static" , "-DLOCAL" , "-D_GLIBCXX_ASSERTIONS", "-Wl,--stack=268435456", "-O2", "-std=c++17", "${file}", "-o", "${file_base_name}.exe", "&&" , "${file_base_name}.exe<input.txt>output.txt"],
+"file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
 "shell":true,
 "working_dir":"$file_path",
 "selector":"source.cpp"

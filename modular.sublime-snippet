@@ -1,7 +1,5 @@
 <snippet>
 	<content><![CDATA[
-template<class T, class H>using umap=unordered_map<T,H,custom_hash>;
-template<class T>using uset=unordered_set<T,custom_hash>;
 template <typename T>
 T inverse(T a, T m) {
   T u = 0, v = 1;
@@ -13,7 +11,6 @@ T inverse(T a, T m) {
   assert(m == 1);
   return u;
 }
-const ll MOD = 998244353;
 template <typename T>
 class Modular {
  public:

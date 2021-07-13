@@ -10,18 +10,18 @@ private:
     #define update_operation(a,b) ${1:}
     #define merge_operation(a,b) ${2:}
     // Lazy Propagation
-    // vll lazy; void lazyPush(int);
+    vll lazy; void lazyPush(int,int,int);
 public:
     seg_tree(int,bool); seg_tree(int,const vll&,bool); 
     const ll query(int,int); const void update(int,int,ll);
 };
 
 seg_tree::seg_tree(int siz,bool indx=0) : n(siz),indx(indx){
-    st.resize(siz*4+1,reset); // lazy.resize(siz*4+1,reset);
+    st.resize(siz*4+1,reset); lazy.resize(siz*4+1,reset);
 }
 
 seg_tree::seg_tree(int siz,const vll &a,bool indx=0) : n(siz),indx(indx){
-    st.resize(siz*4+1,reset); // lazy.resize(siz*4+1,reset);
+    st.resize(siz*4+1,reset); lazy.resize(siz*4+1,reset);
     createTree(indx,n-1+indx,0,a);
 }
 
@@ -34,7 +34,7 @@ void seg_tree::createTree(int l,int r,int i,const vll &a){
     st[i] = merge_operation(st[i*2+1],st[i*2+2]);
 }
 
-// void seg_tree::lazyPush(int i){}
+void seg_tree::lazyPush(int i,int l,int r){}
 
 const ll seg_tree::query(int l,int r){
     return query(indx,n-1+indx,0,l,r);
@@ -44,7 +44,7 @@ ll seg_tree::query(int l,int r,int i,const int &tl,const int &tr){
     if(r < tl || l > tr) return reset;
     if(l >= tl && r <= tr) return st[i];
     int mid = (r-l)/2 + l;
-    // lazyPush(i);
+    lazyPush(i,l,r);
     return merge_operation(query(l,mid,i*2+1,tl,tr),query(mid+1,r,i*2+2,tl,tr));
 }
 
@@ -58,7 +58,7 @@ void seg_tree::update(int l,int r,int i,const ll &val,const int& tl,const int& t
     if(r < tl || l > tr) return;
     if(l >= tl && r <= tr) {st[i] = update_operation(st[i],val); return; }
     int mid = (r-l)/2 + l;
-    // lazyPush(i);
+    lazyPush(i,l,r);
     update(l,mid,i*2+1,val,tl,tr); update(mid+1,r,i*2+2,val,tl,tr);
     st[i] = merge_operation(st[i*2+1],st[i*2+2]);
 }]]></content>
