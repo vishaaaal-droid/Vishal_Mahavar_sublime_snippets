@@ -12,7 +12,7 @@ void count_sort_suffarray(vector<int> &p,const vector<int> &c){
     p = p_new;
 }
 
-vector<int> suffix_array(string &s){
+vector<int> suffix_array(string s){
     s += "\$";
     int n = s.size();
     vector<int> p(n),c(n);

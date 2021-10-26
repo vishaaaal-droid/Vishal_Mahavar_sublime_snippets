@@ -1,10 +1,9 @@
 <snippet>
 	<content><![CDATA[
 class centroid{
-private:
+public:
     ll n; vll siz;vector<bool> vis;
     vll par;  vvll adj;
-public:
     centroid(ll size){
         n = size; adj.clear(); siz.clear(); par.clear(); vis.clear();
         adj.resize(n+1); siz.resize(n+1); par.resize(n+1,0); vis.resize(n+1,0);
@@ -71,8 +70,7 @@ ll centroid::findHeight(ll root,ll par){
 void centroid::adjust(vvll &mat){
     adjust();
     mat = adj;
-}
-]]></content>
+}]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>centroid</tabTrigger>
 	<!-- Optional: Set a scope to limit where the snippet will trigger -->
