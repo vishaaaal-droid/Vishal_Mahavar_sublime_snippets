@@ -18,8 +18,6 @@ public:
     ll findCentroid(ll,ll,ll);
     ll decompose(ll,ll);
     void adjust(void);
-    void adjust(vvll &);
-    ll findHeight(ll,ll);
 };
 void centroid::addEdge(ll a,ll b){
     adj[a].pb(b); adj[b].pb(a);
@@ -41,7 +39,7 @@ ll centroid::findCentroid(ll node,ll par,ll size){
     }
     return node;
 }
-ll centroid::decompose(ll node=1,ll p=0){
+ll centroid::decompose(ll node=1,ll p=-1){
     precompute(node,p);
     ll c = findCentroid(node,p,siz[node]);
     vis[c]=1; par[c] = p;
@@ -50,6 +48,7 @@ ll centroid::decompose(ll node=1,ll p=0){
         if(vis[x]) continue;
        ll temp = decompose(x,c);
     }
+    if(p == -1) adjust();
     return c;
 }
 void centroid::adjust(void){
@@ -58,18 +57,6 @@ void centroid::adjust(void){
         if(par[i] == 0) continue;
         adj[i].pb(par[i]); adj[par[i]].pb(i);
     }
-}
-ll centroid::findHeight(ll root,ll par){
-    ll h=0;
-    for(ll x:adj[root]){
-        if(x == par) continue;
-        h = max(h,findHeight(x,root));
-    }
-    return ++h;
-}
-void centroid::adjust(vvll &mat){
-    adjust();
-    mat = adj;
 }]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>centroid</tabTrigger>
