@@ -54,7 +54,7 @@ ll centroid::decompose(ll node=1,ll p=-1){
 void centroid::adjust(void){
     adj.clear(); adj.resize(n+1);
     for(ll i=1;i<=n;i++){
-        if(par[i] == 0) continue;
+        if(par[i] == -1) continue;
         adj[i].pb(par[i]); adj[par[i]].pb(i);
     }
 }]]></content>
