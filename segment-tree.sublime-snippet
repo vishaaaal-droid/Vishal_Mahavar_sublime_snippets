@@ -1,31 +1,34 @@
 <snippet>
 	<content><![CDATA[
+template<class T,class F = function<T(const T&,const T&)>>
 class seg_tree{
 private:
-    const ll reset = 0;
-    int n; bool indx; vll st;
-    void createTree(int,int,int,const vll&); 
-    void update(int,int,int,const ll&,const int&,const int&); 
-    ll query(int,int,int,const int&,const int&); 
-    #define update_operation(a,b) ${1:}
-    #define merge_operation(a,b) ${2:}
+    T reset = ${1:/*reset value here*/};
+    F merge_operation;
+    int n; bool indx; vector<T> st;
+    void createTree(const int&,const int&,const int&,const vector<T>&); 
+    void update(const int&,const int&,const int&,const T&,const int&,const int&); 
+    T query(const int&,const int&,const int&,const int&,const int&); 
     // Lazy Propagation
-    vll lazy; void lazyPush(int,int,int);
+    vector<T> lazy; void lazyPush(const int&,const int&,const int&);
 public:
-    seg_tree(int,bool); seg_tree(int,const vll&,bool); 
-    const ll query(int,int); const void update(int,int,ll);
+    seg_tree(int siz,F fun,bool indx=0); seg_tree(int siz,F fun,const vector<T>&a,bool indx=0); 
+    T query(int,int); void update(int,int,T);
 };
-
-seg_tree::seg_tree(int siz,bool indx=0) : n(siz),indx(indx){
+template<class T,class F>
+seg_tree<T,F>::seg_tree(int siz,F fun,bool indx) : n(siz),indx(indx){
+    merge_operation = fun;
     st.resize(siz*4+1,reset); lazy.resize(siz*4+1,reset);
 }
-
-seg_tree::seg_tree(int siz,const vll &a,bool indx=0) : n(siz),indx(indx){
+template<class T,class F>
+seg_tree<T,F>::seg_tree(int siz,F fun,const vector<T> &a,bool indx) : n(siz),indx(indx){
+    merge_operation = fun;
     st.resize(siz*4+1,reset); lazy.resize(siz*4+1,reset);
     createTree(indx,n-1+indx,0,a);
 }
 
-void seg_tree::createTree(int l,int r,int i,const vll &a){
+template<class T,class F>
+void seg_tree<T,F>::createTree(const int &l,const int &r,const int &i,const vector<T> &a){
     if(l == r){
         st[i] = a[l]; return;
     }
@@ -33,34 +36,38 @@ void seg_tree::createTree(int l,int r,int i,const vll &a){
     createTree(l,mid,i*2+1,a); createTree(mid+1,r,i*2+2,a);
     st[i] = merge_operation(st[i*2+1],st[i*2+2]);
 }
+template<class T,class F>
+void seg_tree<T,F>::lazyPush(const int &i,const int &l,const int &r){}
 
-void seg_tree::lazyPush(int i,int l,int r){}
-
-const ll seg_tree::query(int l,int r){
-    return query(indx,n-1+indx,0,l,r);
-}
-
-ll seg_tree::query(int l,int r,int i,const int &tl,const int &tr){
-    if(r < tl || l > tr) return reset;
-    if(l >= tl && r <= tr) return st[i];
-    int mid = (r-l)/2 + l;
-    lazyPush(i,l,r);
-    return merge_operation(query(l,mid,i*2+1,tl,tr),query(mid+1,r,i*2+2,tl,tr));
-}
-
-const void seg_tree::update(int l,int r,ll val){
+template<class T,class F>
+void seg_tree<T,F>::update(int l,int r,T val){
     assert(l == r); // remove if lazy
     // current implementation is not lazy
     update(indx,n-1+indx,0,val,l,r);
 }
 
-void seg_tree::update(int l,int r,int i,const ll &val,const int& tl,const int& tr){
+template<class T,class F>
+void seg_tree<T,F>::update(const int &l,const int &r,const int &i,const T &val,const int& tl,const int& tr){
     if(r < tl || l > tr) return;
-    if(l >= tl && r <= tr) {st[i] = update_operation(st[i],val); return; }
+    if(l >= tl && r <= tr) {st[i] = ${2:val}; return; }
     int mid = (r-l)/2 + l;
     lazyPush(i,l,r);
     update(l,mid,i*2+1,val,tl,tr); update(mid+1,r,i*2+2,val,tl,tr);
     st[i] = merge_operation(st[i*2+1],st[i*2+2]);
+}
+
+template<class T,class F>
+T seg_tree<T,F>::query(int l,int r){
+    return query(indx,n-1+indx,0,l,r);
+}
+
+template<class T,class F>
+T seg_tree<T,F>::query(const int &l,const int &r,const int &i,const int &tl,const int &tr){
+    if(r < tl || l > tr) return reset;
+    if(l >= tl && r <= tr) return st[i];
+    int mid = (r-l)/2 + l;
+    lazyPush(i,l,r);
+    return merge_operation(query(l,mid,i*2+1,tl,tr),query(mid+1,r,i*2+2,tl,tr));
 }]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 <tabTrigger>segment tree</tabTrigger>
